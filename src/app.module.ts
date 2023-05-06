@@ -18,6 +18,7 @@ import { CategoriesModule } from './module/categories/categories.module';
 import { SubCategoriesModule } from './module/sub-categories/sub-categories.module';
 import { InfoModule } from './module/info/info.module';
 import { SubjectsModule } from './module/subjects/subjects.module';
+import { SubjectInfoModule } from './module/subject_info/subject_info.module';
 dotenv.config();
 
 @Module({
@@ -45,6 +46,7 @@ dotenv.config();
     SubCategoriesModule,
     InfoModule,
     SubjectsModule,
+    SubjectInfoModule,
   ],
 })
 export class AppModule {}
