@@ -1,5 +1,6 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { SubjectInfo } from './subject_info.entity';
+import { Videos } from './videos.entity';
+import { Lectures } from './lectures.entity';
 
 @Entity({ name: 'subjects' })
 export class Subject extends BaseEntity {
@@ -16,6 +17,9 @@ export class Subject extends BaseEntity {
   @CreateDateColumn()
   create_date: Date;
 
-  @OneToMany(() => SubjectInfo, (subject_info) => subject_info.subject_id)
-  subject_info: SubjectInfo[]
+  @OneToMany(() => Lectures, (lectures) => lectures.subject_id)
+  subject_info: Lectures[]
+
+  @OneToMany(() => Videos, (video) => video.subject_id)
+  video: Videos[]
 }

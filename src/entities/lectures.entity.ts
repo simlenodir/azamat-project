@@ -1,8 +1,8 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Subject } from './subjects.entity';
 
-@Entity({ name: 'videos' })
-export class Videos extends BaseEntity {
+@Entity({ name: 'lectures' })
+export class Lectures extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
