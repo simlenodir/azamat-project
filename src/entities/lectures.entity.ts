@@ -15,13 +15,6 @@ export class Lectures extends BaseEntity {
 
   @Column({
     type: 'character varying',
-    length: 80,
-    nullable: false,
-  })
-  duration: string;
-
-  @Column({
-    type: 'character varying',
     nullable: false,
   })
   link: string;

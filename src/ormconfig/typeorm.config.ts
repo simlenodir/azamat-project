@@ -5,7 +5,7 @@ import { SubCategory } from 'src/entities/sub_category.entity';
 import { SubCategoryInfo } from 'src/entities/category_info.entity';
 import { Subject } from 'src/entities/subjects.entity';
 import { Videos } from 'src/entities/videos.entity';
-import { SubjectInfo } from 'src/entities/subject_info.entity';
+import { Lectures } from 'src/entities/lectures.entity';
 dotenv.config();
 
 export const connectDb: TypeOrmModuleOptions = {
@@ -15,7 +15,7 @@ export const connectDb: TypeOrmModuleOptions = {
   password: String(process.env.DB_PASSWORD),
   username: process.env.DB_USERNAME,
   database: process.env.DATABASE,
-  entities: [Category, SubCategory, SubCategoryInfo, SubjectInfo, Subject, Videos],
+  entities: [Category, SubCategory, SubCategoryInfo, Subject, Lectures, Videos],
   autoLoadEntities: true,
   synchronize: true,
 };

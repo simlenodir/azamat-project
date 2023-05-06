@@ -10,6 +10,7 @@ export class Subject extends BaseEntity {
   @Column({
     type: 'character varying',
     length: 80,
+    unique: true,
     nullable: false,
   })
   title: string;

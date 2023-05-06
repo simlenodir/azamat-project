@@ -71,7 +71,6 @@ export class InfoService {
 
   async findOne(id: string): Promise<SubCategoryInfo> {
     const foundInfo = await this.foundInfo(id);
-    console.log(foundInfo.views + 1);
     
       await SubCategoryInfo.createQueryBuilder()
       .update(SubCategoryInfo)
@@ -91,6 +90,7 @@ export class InfoService {
     dto: UpdateInfoDto,
     file_link: string | boolean,
   ): Promise<void> {
+    
     const foundInfo = await this.foundInfo(id);
     await SubCategoryInfo.createQueryBuilder()
       .update(SubCategoryInfo)

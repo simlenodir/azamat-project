@@ -26,6 +26,12 @@ export class Videos extends BaseEntity {
   })
   link: string;
 
+  @Column({
+    type: 'character varying',
+    nullable: false,
+  })
+  img: string;
+
   @CreateDateColumn()
   create_date: Date;
 

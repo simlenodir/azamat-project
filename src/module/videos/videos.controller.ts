@@ -12,10 +12,11 @@ import {
   HttpCode,
   HttpStatus,
   Query,
+  Header,
 } from '@nestjs/common';
-import { InfoService } from './info.service';
-import { CreateInfoDto } from './dto/create-info.dto';
-import { UpdateInfoDto } from './dto/update-info.dto';
+import { VideosService } from './videos.service';
+import { CreateVideoDto } from './dto/create-video.dto';
+import { UpdateVideoDto } from './dto/update-video.dto';
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -26,17 +27,17 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { TokenMiddleware } from 'src/middleware/middleware.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { upload } from 'src/utils/upload';
-// import { upload } from '';
+import { TokenMiddleware } from 'src/middleware/middleware.service';
+import { Videos } from 'src/entities/videos.entity';
 
-@Controller('info')
-@ApiTags('SubCategoriesInfo')
-export class InfoController {
+@Controller('videos')
+@ApiTags('Videos')
+export class VideosController {
   constructor(
-    private readonly infoService: InfoService,
-    private readonly verifyAdmin: TokenMiddleware,
+    private readonly videosService: VideosService,
+    private readonly varifyAdmin: TokenMiddleware,
   ) {}
 
   @Post('create')
@@ -44,21 +45,25 @@ export class InfoController {
   @ApiBody({
     schema: {
       type: 'object',
-      required: ['title', 'sub_id', 'image', 'description'],
+      required: ['title', 'subject_id', 'image', 'duration', 'link_video'],
       properties: {
         title: {
           type: 'string',
           default: 'Ronaldo futbol qiroli',
         },
+        duration: {
+          type: 'string',
+          default: '5:57 min',
+        },
+        link_video: {
+          type: 'string',
+          default: '5:57 min',
+        },
         image: {
           type: 'string',
           format: 'binary',
         },
-        description: {
-          type: 'string',
-          default: 'The times xabar beradi',
-        },
-        sub_id: {
+        subject_id: {
           type: 'string',
           default: 'c4adaf55-feec-4c85-8d34-67c3cd1f2d14',
         },
@@ -75,36 +80,32 @@ export class InfoController {
     required: true,
   })
   @UseInterceptors(FileInterceptor('image', upload))
-  async createNews(
-    @UploadedFile() image: Express.Multer.File,
-    @Body() dto: CreateInfoDto,
-    @Headers() header: any,
+  async create(
+    @Body() createVideoDto: CreateVideoDto,
+    @Headers() header: string,
+    @UploadedFile() file: Express.Multer.File,
   ) {
-    const adminId = await this.verifyAdmin.verify(header);
-    console.log(image);
-
+    const adminId = await this.varifyAdmin.verify(header);
     if (adminId) {
-      return await this.infoService.create(dto, image.originalname);
+      return this.videosService.create(createVideoDto, file.originalname);
     }
   }
 
-  @Get('list')
+  @Get('/list')
   @ApiOkResponse()
-  @ApiNotFoundResponse()
-  @ApiBadRequestResponse()
-  async findAll(@Query('ofset') ofset: number, @Query('limit') limit: number) {
-    return this.infoService.findAll(ofset, limit);
+  findAll() {
+    return this.videosService.findAll();
   }
 
-  @Get('info/:id')
+  @Get(':id')
   @ApiOkResponse()
   @ApiNotFoundResponse()
   @ApiBadRequestResponse()
   findOne(@Param('id') id: string) {
-    return this.infoService.findOne(id);
+    return this.videosService.findOne(id);
   }
 
-  @Patch('update/:id')
+  @Patch('/update/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBody({
     schema: {
@@ -114,17 +115,21 @@ export class InfoController {
           type: 'string',
           default: 'Ronaldo futbol qiroli',
         },
-        file: {
+        duration: {
+          type: 'string',
+          default: '5:57 min',
+        },
+        link_video: {
+          type: 'string',
+          default: '5:57 min',
+        },
+        image: {
           type: 'string',
           format: 'binary',
         },
-        description: {
+        subject_id: {
           type: 'string',
-          default: 'The times xabar beradi',
-        },
-        isPublished: {
-          type: 'boolean',
-          default: false,
+          default: 'c4adaf55-feec-4c85-8d34-67c3cd1f2d14',
         },
       },
     },
@@ -138,36 +143,21 @@ export class InfoController {
     description: 'Autharization',
     required: true,
   })
-  @UseInterceptors(FileInterceptor('file', upload))
-  async updateNews(
+  @UseInterceptors(FileInterceptor('image', upload))
+  async update(
     @Param('id') id: string,
+    @Body() updateVideoDto: UpdateVideoDto,
     @UploadedFile() file: Express.Multer.File,
-    @Body() dto: UpdateInfoDto,
-    @Headers() header: any,
+    @Headers() header: string,
   ) {
-    const adminId = await this.verifyAdmin.verify(header);
+    const adminId = await this.varifyAdmin.verify(header);
     if (adminId) {
-      if (file) {
-        return await this.infoService.update(
-          id,
-          dto,
-          file.originalname,
-        );
-      } else {
-        return await this.infoService.update(id, dto, false);
-      }
+      return this.videosService.update(id, updateVideoDto, file.originalname );
     }
   }
+
   @Delete(':id')
-  @ApiHeader({
-    name: 'autharization',
-    description: 'Autharization',
-    required: true,
-  })
-  @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiBadRequestResponse()
-  @ApiNotFoundResponse()
   remove(@Param('id') id: string) {
-    return this.infoService.remove(id);
+    return this.videosService.remove(id);
   }
 }
