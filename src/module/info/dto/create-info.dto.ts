@@ -14,7 +14,4 @@ export class CreateInfoDto {
     @IsNotEmpty()
     sub_id: string
 
-    @IsString()
-    @IsNotEmpty()
-    image: string
 }

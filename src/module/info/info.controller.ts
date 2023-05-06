@@ -11,6 +11,7 @@ import {
   Headers,
   HttpCode,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { InfoService } from './info.service';
 import { CreateInfoDto } from './dto/create-info.dto';
@@ -28,6 +29,7 @@ import {
 import { TokenMiddleware } from 'src/middleware/middleware.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { upload } from 'src/utils/upload';
+// import { upload } from '';
 
 @Controller('info')
 @ApiTags('SubCategoriesInfo')
@@ -48,7 +50,7 @@ export class InfoController {
           type: 'string',
           default: 'Ronaldo futbol qiroli',
         },
-        Image: {
+        image: {
           type: 'string',
           format: 'binary',
         },
@@ -72,37 +74,88 @@ export class InfoController {
     description: 'Autharization',
     required: true,
   })
-  @UseInterceptors(FileInterceptor('file', upload))
+  @UseInterceptors(FileInterceptor('image', upload))
   async createNews(
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
     @Body() dto: CreateInfoDto,
     @Headers() header: any,
   ) {
     const adminId = await this.verifyAdmin.verify(header);
-    console.log(file);
-    
+    console.log(image);
+
     if (adminId) {
-      return await this.infoService.create(dto, file.originalname);
+      return await this.infoService.create(dto, image.originalname);
     }
   }
 
-  @Get()
-  findAll() {
-    return this.infoService.findAll();
+  @Get('list')
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
+  async findAll(@Query('ofset') ofset: number, @Query('limit') limit: number) {
+    return this.infoService.findAll(ofset, limit);
   }
 
-  @Get(':id')
+  @Get('info/:id')
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
   findOne(@Param('id') id: string) {
-    return this.infoService.findOne(+id);
+    return this.infoService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateInfoDto: UpdateInfoDto) {
-    return this.infoService.update(+id, updateInfoDto);
+  @Patch('update/:id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        title: {
+          type: 'string',
+          default: 'Ronaldo futbol qiroli',
+        },
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+        description: {
+          type: 'string',
+          default: 'The times xabar beradi',
+        },
+      },
+    },
+  })
+  @ApiConsumes('multipart/form-data')
+  @ApiOperation({ summary: 'Attendance Punch In' })
+  @ApiBadRequestResponse()
+  @ApiNotFoundResponse()
+  @ApiHeader({
+    name: 'autharization',
+    description: 'Autharization',
+    required: true,
+  })
+  @UseInterceptors(FileInterceptor('file', upload))
+  async updateNews(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+    @Body() dto: UpdateInfoDto,
+    @Headers() header: any,
+  ) {
+    const adminId = await this.verifyAdmin.verify(header);
+    if (adminId) {
+      if (file) {
+        return await this.infoService.update(
+          id,
+          dto,
+          file.originalname,
+        );
+      } else {
+        return await this.infoService.update(id, dto, false);
+      }
+    }
   }
-
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.infoService.remove(+id);
+    return this.infoService.remove(id);
   }
 }

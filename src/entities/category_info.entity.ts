@@ -15,6 +15,20 @@ export class SubCategoryInfo extends BaseEntity {
 
   @Column({
     type: 'character varying',
+    length: 250,
+    default: '00:00'
+  })
+  timeHour: string;
+
+  @Column({
+    type: 'character varying',
+    length: 250,
+    default: '00:00'
+  })
+  dateTime: string;
+
+  @Column({
+    type: 'character varying',
     nullable: false,
   })
   description: string;
