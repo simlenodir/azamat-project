@@ -16,7 +16,6 @@ export class AuthController {
   @ApiNotFoundResponse()
   @HttpCode(HttpStatus.OK)
   async adminLogin(@Body() body: CreateAuthDto) {
-    console.log(body);
     return await this.usersService.admin_login(body);
   }
 

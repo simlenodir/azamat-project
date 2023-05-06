@@ -17,6 +17,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { CategoriesModule } from './module/categories/categories.module';
 import { SubCategoriesModule } from './module/sub-categories/sub-categories.module';
 import { InfoModule } from './module/info/info.module';
+import { SubjectsModule } from './module/subjects/subjects.module';
 dotenv.config();
 
 @Module({
@@ -43,6 +44,7 @@ dotenv.config();
     CategoriesModule,
     SubCategoriesModule,
     InfoModule,
+    SubjectsModule,
   ],
 })
 export class AppModule {}

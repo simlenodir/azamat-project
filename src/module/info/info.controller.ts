@@ -155,6 +155,14 @@ export class InfoController {
     }
   }
   @Delete(':id')
+  @ApiHeader({
+    name: 'autharization',
+    description: 'Autharization',
+    required: true,
+  })
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiBadRequestResponse()
+  @ApiNotFoundResponse()
   remove(@Param('id') id: string) {
     return this.infoService.remove(id);
   }
