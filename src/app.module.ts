@@ -20,6 +20,7 @@ import { InfoModule } from './module/info/info.module';
 import { SubjectsModule } from './module/subjects/subjects.module';
 import { LecturesModule } from './module/lectures/lectures.module';
 import { VideosModule } from './module/videos/videos.module';
+import { PracticesModule } from './module/practices/practices.module';
 dotenv.config();
 
 @Module({
@@ -49,6 +50,7 @@ dotenv.config();
     SubjectsModule,
     LecturesModule,
     VideosModule,
+    PracticesModule,
   ],
 })
 export class AppModule {}

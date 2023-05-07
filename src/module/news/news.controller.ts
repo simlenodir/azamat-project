@@ -25,7 +25,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { CreateNewsDto } from './dto/create-news.dto';
-// import { upload } from 'src/utils/upload';
 import { NewsServise } from './news.service';
 import { UpdateNewsDto } from './dto/update-news.dto';
 import { TokenMiddleware } from 'src/middleware/middleware.service';
