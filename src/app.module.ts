@@ -22,6 +22,7 @@ import { LecturesModule } from './module/lectures/lectures.module';
 import { VideosModule } from './module/videos/videos.module';
 import { PracticesModule } from './module/practices/practices.module';
 import { SubjectAdditionalModule } from './module/subject_additional/subject_additional.module';
+import { SubjectLabaratoriesModule } from './module/subject_labaratories/subject_labaratories.module';
 dotenv.config();
 
 @Module({
@@ -53,6 +54,7 @@ dotenv.config();
     VideosModule,
     PracticesModule,
     SubjectAdditionalModule,
+    SubjectLabaratoriesModule,
   ],
 })
 export class AppModule {}

@@ -15,7 +15,7 @@ export class SubjectAdditionalService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-    return foundSubjectAdditional
+    return foundSubjectAdditional;
   }
   async create(dto: CreateSubjectAdditionalDto, file: string): Promise<void> {
     await SubjectAdditional.createQueryBuilder()
@@ -45,36 +45,36 @@ export class SubjectAdditionalService {
   }
 
   async findOne(id: string): Promise<SubjectAdditional> {
-    return await this.oneSubjectAdditional(id)
+    return await this.oneSubjectAdditional(id);
   }
 
   async update(
     id: string,
     dto: UpdateSubjectAdditionalDto,
-    file: string
+    file: string,
   ): Promise<void> {
-    const foundSubjectAdditional = await this.oneSubjectAdditional(id)
-    console.log(foundSubjectAdditional);
-    
+    const foundSubjectAdditional = await this.oneSubjectAdditional(id);
+
     await SubjectAdditional.createQueryBuilder()
-    .update(SubjectAdditional)
-    .set({
-      title: dto.title || foundSubjectAdditional.title,
-      subject_id: dto.subject_id || foundSubjectAdditional.subject_id as any,
-      link: file || foundSubjectAdditional.link
-    })
-    .where({id})
-    .execute()
-    .catch(() => {
-      throw new HttpException(
-        'Internal server error',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    });
+      .update(SubjectAdditional)
+      .set({
+        title: dto.title || foundSubjectAdditional.title,
+        subject_id:
+          dto.subject_id || (foundSubjectAdditional.subject_id as any),
+        link: file || foundSubjectAdditional.link,
+      })
+      .where({ id })
+      .execute()
+      .catch(() => {
+        throw new HttpException(
+          'Internal server error',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      });
   }
 
   async remove(id: string): Promise<void> {
-    await this.oneSubjectAdditional(id)
+    await this.oneSubjectAdditional(id);
     await SubjectAdditional.delete(id).catch(() => {
       throw new HttpException(
         'Internal server error',
