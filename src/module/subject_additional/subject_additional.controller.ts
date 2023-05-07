@@ -73,7 +73,7 @@ export class SubjectAdditionalController {
     required: true,
   })
   @UseInterceptors(FileInterceptor('file', upload))
-  async createLecture(
+  async createAdditional(
     @UploadedFile() file: Express.Multer.File,
     @Body() createNewsDto: CreateSubjectAdditionalDto,
     @Headers() header: any,

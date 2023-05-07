@@ -3,6 +3,7 @@ import { Videos } from './videos.entity';
 import { Lectures } from './lectures.entity';
 import { Practices } from './practices.entity';
 import { SubjectAdditional } from './subject_additional.entity';
+import { Labaratories } from './labaratories.entity';
 
 @Entity({ name: 'subjects' })
 export class Subject extends BaseEntity {
@@ -31,4 +32,7 @@ export class Subject extends BaseEntity {
 
   @OneToMany(() => SubjectAdditional, (subject_additional) => subject_additional.subject_id)
   subject_additional: SubjectAdditional[]
+
+  @OneToMany(() => Labaratories, (labaratory) => labaratory.subject_id)
+  labaratories: Labaratories[]
 }

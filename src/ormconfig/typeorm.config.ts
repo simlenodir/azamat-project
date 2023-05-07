@@ -8,6 +8,7 @@ import { Videos } from 'src/entities/videos.entity';
 import { Lectures } from 'src/entities/lectures.entity';
 import { Practices } from 'src/entities/practices.entity';
 import { SubjectAdditional } from 'src/entities/subject_additional.entity';
+import { Labaratories } from 'src/entities/labaratories.entity';
 dotenv.config();
 
 export const connectDb: TypeOrmModuleOptions = {
@@ -26,6 +27,7 @@ export const connectDb: TypeOrmModuleOptions = {
     Videos,
     Practices,
     SubjectAdditional,
+    Labaratories,
   ],
   autoLoadEntities: true,
   synchronize: true,
