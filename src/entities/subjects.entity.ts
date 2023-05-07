@@ -21,7 +21,7 @@ export class Subject extends BaseEntity {
   create_date: Date;
 
   @OneToMany(() => Lectures, (lectures) => lectures.subject_id)
-  subject_info: Lectures[]
+  lectures: Lectures[]
 
   @OneToMany(() => Videos, (video) => video.subject_id)
   video: Videos[]

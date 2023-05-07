@@ -85,11 +85,17 @@ export class LecturesController {
   }
 
   @Get('/list')
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
   findAll() {
     return this.lecturesService.findAll();
   }
 
   @Get(':id')
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
   findOne(@Param('id') id: string) {
     return this.lecturesService.findOne(id);
   }
@@ -138,7 +144,6 @@ export class LecturesController {
     }
   }
 
-  @Delete('/delete/:id')
   @Delete('/delete/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNoContentResponse()
