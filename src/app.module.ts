@@ -25,6 +25,7 @@ import { SubjectAdditionalModule } from './module/subject_additional/subject_add
 import { SubjectLabaratoriesModule } from './module/subject_labaratories/subject_labaratories.module';
 import { EducationModule } from './module/education/education.module';
 import { PoliticalModule } from './module/political/political.module';
+import { EventsModule } from './module/events/events.module';
 dotenv.config();
 
 @Module({
@@ -59,6 +60,7 @@ dotenv.config();
     SubjectLabaratoriesModule,
     EducationModule,
     PoliticalModule,
+    EventsModule,
   ],
 })
 export class AppModule {}

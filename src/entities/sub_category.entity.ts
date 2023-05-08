@@ -3,6 +3,7 @@ import { Category } from './categories.entity';
 import { SubCategoryInfo } from './category_info.entity';
 import { Education } from './education.entity';
 import { Political } from './political.entity';
+import { Events } from './events.entity';
 
 @Entity({ name: 'sub_category' })
 export class SubCategory extends BaseEntity {
@@ -33,4 +34,7 @@ export class SubCategory extends BaseEntity {
 
   @OneToMany(() => Political, (political) => political.sub_id)
   political: Political[]
+
+  @OneToMany(() => Events, (events) => events.sub_id)
+  events: Events[]
 }

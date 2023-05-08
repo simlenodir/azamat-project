@@ -11,6 +11,7 @@ import { SubjectAdditional } from 'src/entities/subject_additional.entity';
 import { Labaratories } from 'src/entities/labaratories.entity';
 import { Education } from 'src/entities/education.entity';
 import { Political } from 'src/entities/political.entity';
+import { Events } from 'src/entities/events.entity';
 dotenv.config();
 
 export const connectDb: TypeOrmModuleOptions = {
@@ -32,6 +33,7 @@ export const connectDb: TypeOrmModuleOptions = {
     Labaratories,
     Education,
     Political,
+    Events,
   ],
   autoLoadEntities: true,
   synchronize: true,
