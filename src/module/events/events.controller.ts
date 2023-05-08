@@ -88,23 +88,82 @@ export class EventsController {
     }
   }
 
-  @Get()
+  @Get('/list')
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
   findAll() {
     return this.eventsService.findAll();
   }
 
   @Get(':id')
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
   findOne(@Param('id') id: string) {
-    return this.eventsService.findOne(+id);
+    return this.eventsService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
-    return this.eventsService.update(+id, updateEventDto);
+  @Patch('/update/:id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiNoContentResponse()
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        image: {
+          type: 'string',
+          format: 'binary',
+        },
+        title: {
+          type: 'string',
+          default: 'Real Madrid',
+        },
+        description: {
+          type: 'string',
+          default: 'Real Madrid',
+        },
+        sub_id: {
+          type: 'string',
+          default: 'uuid',
+        },
+      },
+    },
+  })
+  @ApiConsumes('multipart/form-data')
+  @ApiOperation({ summary: 'Attendance Punch In' })
+  @ApiBadRequestResponse()
+  @ApiNotFoundResponse()
+  @ApiHeader({
+    name: 'autharization',
+    description: 'Admin token',
+    required: true,
+  })
+  @UseInterceptors(FileInterceptor('image', upload))
+  async update(
+    @Param('id') id: string,
+    @Body() body: UpdateEventDto,
+    @UploadedFile() file: Express.Multer.File,
+    @Headers() header: any,
+  ) {
+    const adminId = await this.verifyAdmin.verify(header);
+    if (adminId && file) {
+      return this.eventsService.update(id, body, file.originalname);
+    }
+    return this.eventsService.update(id, body, undefined);
   }
 
-  @Delete(':id')
+  @Delete('/delete/:id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiNoContentResponse()
+  @ApiCreatedResponse()
+  @ApiUnprocessableEntityResponse()
+  @ApiHeader({
+    name: 'autharization',
+    description: 'Admin token',
+    required: true,
+  })
   remove(@Param('id') id: string) {
-    return this.eventsService.remove(+id);
+    return this.eventsService.remove(id);
   }
 }
