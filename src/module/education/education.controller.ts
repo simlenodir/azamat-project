@@ -123,7 +123,7 @@ export class EducationController {
           type: 'string',
           default: 'Real Madrid',
         },
-        subject_id: {
+        sub_id: {
           type: 'string',
           default: 'uuid',
         },
@@ -155,7 +155,16 @@ export class EducationController {
   }
 
 
-  @Delete(':id')
+  @Delete('/delete/:id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiNoContentResponse()
+  @ApiCreatedResponse()
+  @ApiUnprocessableEntityResponse()
+  @ApiHeader({
+    name: 'autharization',
+    description: 'Admin token',
+    required: true,
+  })
   remove(@Param('id') id: string) {
     return this.educationService.remove(id);
   }

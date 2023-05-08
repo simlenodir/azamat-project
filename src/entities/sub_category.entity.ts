@@ -2,6 +2,7 @@ import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, On
 import { Category } from './categories.entity';
 import { SubCategoryInfo } from './category_info.entity';
 import { Education } from './education.entity';
+import { Political } from './political.entity';
 
 @Entity({ name: 'sub_category' })
 export class SubCategory extends BaseEntity {
@@ -29,4 +30,7 @@ export class SubCategory extends BaseEntity {
 
   @OneToMany(() => Education, (education) => education.sub_id)
   education: Education[]
+
+  @OneToMany(() => Political, (political) => political.sub_id)
+  political: Political[]
 }

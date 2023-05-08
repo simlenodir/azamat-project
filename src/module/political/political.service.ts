@@ -1,26 +1,79 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreatePoliticalDto } from './dto/create-political.dto';
 import { UpdatePoliticalDto } from './dto/update-political.dto';
+import { Political } from 'src/entities/political.entity';
 
 @Injectable()
 export class PoliticalService {
-  create(createPoliticalDto: CreatePoliticalDto) {
-    return 'This action adds a new political';
+  async onePolitical(id: string): Promise<Political>{
+    const foundPolitical = await Political.findOne({
+      where: {id}
+    }).catch(() => {
+      throw new HttpException(
+        'Political is not found',
+        HttpStatus.NOT_FOUND,
+      );
+    });
+    if (!foundPolitical) {
+      throw new HttpException('Lecture is not found', HttpStatus.NOT_FOUND);
+    }
+    return foundPolitical
   }
 
-  findAll() {
-    return `This action returns all political`;
+  async create(dto: CreatePoliticalDto, file: string): Promise<void> {
+     await Political.createQueryBuilder()
+     .insert()
+     .into(Political)
+     .values({
+      title: dto.title,
+      description: dto.description,
+      sub_id:  dto.sub_id as any,
+      link: file
+     })
+     .execute()
+     .catch(() => {
+      throw new HttpException(
+        'Internal server error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} political`;
+  async findAll(): Promise<Political[]> {
+    return await Political.find().catch(() => {
+      throw new HttpException(
+        'Internal server error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    });
   }
 
-  update(id: number, updatePoliticalDto: UpdatePoliticalDto) {
-    return `This action updates a #${id} political`;
+  async findOne(id: string): Promise<Political> {
+    return await this.onePolitical(id)
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} political`;
+  async update(id: string, dto: UpdatePoliticalDto, file: string): Promise<void> {
+    const foundPolitical = await this.onePolitical(id)
+    await Political.createQueryBuilder()
+    .update(Political)
+    .set({
+      title: dto.title || foundPolitical.title,
+      description: dto.description || foundPolitical.description,
+      sub_id: dto.sub_id as any || foundPolitical.sub_id,
+      link: file || foundPolitical.link
+    })
+    .where({id})
+    .execute()
+    .catch(() => {
+      throw new HttpException(
+        'Internal server error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    });
+  }
+
+  async remove(id: string): Promise<void> {
+     await this.onePolitical(id)
+     await Political.delete(id)
   }
 }
