@@ -12,8 +12,7 @@ export class UpdateEventDto extends PartialType(CreateEventDto) {
     @IsOptional()
     description: string;
 
-    @IsOptional()
     @IsString()
-    @Length(1, 100)
+    @IsOptional()
     sub_id: string;
 }
