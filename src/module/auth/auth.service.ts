@@ -30,13 +30,14 @@ export class AuthService {
 
     if (adminEmail && password) {
       await senMail(body.email, randomSon);
-      await Admin.createQueryBuilder()
+      const adminId: any = await Admin.createQueryBuilder()
         .insert()
         .into(Admin)
         .values({
           email: body.email,
           password: hash,
         })
+        .returning('id')
         .execute()
         .catch(() => {
           throw new HttpException(
@@ -45,7 +46,7 @@ export class AuthService {
           );
         });
     }
-
+    
     const newObj = {
       email: body.email,
       password: body.password,
@@ -62,7 +63,6 @@ export class AuthService {
 
   async admin_login(body: CreateAuthDto) {
     const randomSon = random();
-    console.log(body);
 
     const password = body.password;
     const foundAdmin = await Admin.findOne({
@@ -116,21 +116,21 @@ export class AuthService {
     };
   }
 
-  async update(id: string, dto: UpdateAdminDto, file: string): Promise<void> {
-    const foundAdmin = await Admin.findOne({ where: { id } });
-    const foundAdmin1 = await Admin.find();
+  async update(email: string, dto: UpdateAdminDto, file: string): Promise<void> {
+    const foundAdmin = await Admin.find()
+    const found = foundAdmin[0]
+     
     await Admin.createQueryBuilder()
       .update(Admin)
       .set({
-        email: dto.email || foundAdmin.email,
-        password: dto.password || foundAdmin.password,
-        telegram: (dto.telegram as any) || foundAdmin.telegram,
-        instagram:
-          dto.instagram || foundAdmin1[0].facebook || foundAdmin.instagram,
-        facebook: dto.facebook || foundAdmin.facebook,
-        twitter: dto.twitter || foundAdmin.facebook,
-        youtube: dto.youtube || foundAdmin.youtube,
-        isActive: dto.isaActive || foundAdmin.isActive,
+        email: dto.email || found.email,
+        password: dto.password || found.password,
+        telegram: dto.telegram  || found.telegram,
+        instagram: dto.instagram || found.instagram,
+        facebook: dto.facebook || found.facebook,
+        twitter: dto.twitter || found.facebook,
+        youtube: dto.youtube || found.youtube,
+        isActive: dto.isaActive || found.isActive,
         image: file,
       })
       .where({ email: dto.email })

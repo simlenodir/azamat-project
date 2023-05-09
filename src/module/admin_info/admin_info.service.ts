@@ -1,26 +1,71 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateAdminInfoDto } from './dto/create-admin_info.dto';
 import { UpdateAdminInfoDto } from './dto/update-admin_info.dto';
+import { AdminInfo } from 'src/entities/admin_info.entity';
+import { Admin } from 'typeorm';
 
 @Injectable()
 export class AdminInfoService {
-  create(createAdminInfoDto: CreateAdminInfoDto) {
-    return 'This action adds a new adminInfo';
+  async oneAdminInfo (id: string): Promise<AdminInfo>{
+    const foundAdminInfo = await AdminInfo.findOne({
+      where: {id}
+    })
+    if (!foundAdminInfo) {
+      throw new HttpException(
+        'Admin Info not found',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return foundAdminInfo
   }
 
-  findAll() {
-    return `This action returns all adminInfo`;
+  async create(dto: CreateAdminInfoDto, file: string): Promise<void> {
+    await AdminInfo.createQueryBuilder()
+      .insert()
+      .into(AdminInfo)
+      .values({
+        description: dto.description,
+        title: dto.title,
+        img: file,
+      })
+      .execute();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} adminInfo`;
+  async findAll(): Promise<AdminInfo[]> {
+    return AdminInfo.find().catch(() => {
+      throw new HttpException(
+        'Internal server error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    });
   }
 
-  update(id: number, updateAdminInfoDto: UpdateAdminInfoDto) {
-    return `This action updates a #${id} adminInfo`;
+  async findOne(id: string): Promise<AdminInfo> {
+    return await this.oneAdminInfo(id)
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} adminInfo`;
+  async update(id: string, dto: UpdateAdminInfoDto, file: string): Promise<void> {
+    const foundInfo = await this.oneAdminInfo(id)
+
+    await AdminInfo.createQueryBuilder()
+    .update(AdminInfo)
+    .set({
+      title: dto.title,
+      description: dto.description,
+      img: file
+    })
+    .where({id})
+    .execute()
+    .catch(() => {
+      throw new HttpException(
+        'Internal server error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    });
+  }
+
+  async remove(id: string): Promise<void> {
+    await this.oneAdminInfo(id)
+    await AdminInfo.delete(id)
   }
 }

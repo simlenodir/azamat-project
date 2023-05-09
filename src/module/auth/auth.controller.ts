@@ -114,15 +114,18 @@ export class AuthController {
   })
   @UseInterceptors(FileInterceptor('image', upload))
   async update(
+    // @Param('email') email: string,
     @Body() body: UpdateAdminDto,
-    @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
     @Headers() header: any,
   ) {
     const adminId = await this.verifyAdmin.verify(header);
+    const email = adminId.email
+    console.log(email);
+    
     if (adminId && file) {
-      return this.usersService.update(id, body, file.originalname);
+      return this.usersService.update(email, body, file.originalname);
     }
-    return this.usersService.update(id, body, undefined);
+    return this.usersService.update(email, body, undefined);
   }
 }
