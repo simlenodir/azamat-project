@@ -121,7 +121,6 @@ export class AuthController {
   ) {
     const adminId = await this.verifyAdmin.verify(header);
     const email = adminId.email
-    console.log(email);
     
     if (adminId && file) {
       return this.usersService.update(email, body, file.originalname);

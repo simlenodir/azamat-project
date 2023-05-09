@@ -7,11 +7,6 @@ import { config } from './config';
 import { AuthModule } from './module/auth/auth.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { MiddlewareModule } from './middleware/middleware.module';
-import { NewsModule } from './module/news/news.module';
-import { ClubModule } from './module/club/club.module';
-import { MatchesModule } from './module/matches/matches.module';
-import { TokenMiddleware } from './middleware/middleware.service';
-import { MainNewsModule } from './module/main-news/main-news.module';
 import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { CategoriesModule } from './module/categories/categories.module';
@@ -27,6 +22,7 @@ import { EducationModule } from './module/education/education.module';
 import { PoliticalModule } from './module/political/political.module';
 import { EventsModule } from './module/events/events.module';
 import { AdminInfoModule } from './module/admin_info/admin_info.module';
+import { TokenMiddleware } from './middleware/middleware.service';
 dotenv.config();
 
 @Module({
@@ -45,11 +41,7 @@ dotenv.config();
       },
     }),
     TokenMiddleware,
-    ClubModule,
     AuthModule,
-    NewsModule,
-    MatchesModule,
-    MainNewsModule,
     CategoriesModule,
     SubCategoriesModule,
     InfoModule,
