@@ -37,6 +37,8 @@ export class SubCategoriesService {
     });
   }
 
+
+
   async findOne(id: string): Promise<SubCategory> {
     return await this.foundSubCategory(id)
   }

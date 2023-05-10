@@ -42,6 +42,7 @@ export class InfoService {
     const allInfo = await SubCategoryInfo.find({
       order: {
         create_date: 'DESC',
+        views: 'DESC'
       },
     }).catch(() => {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
@@ -67,6 +68,18 @@ export class InfoService {
       // e.dateTime = `${date} ${time}`;
     });
     return filteredInfos;
+  }
+
+  async searchAll(query: string): Promise<SubCategoryInfo[]> {
+    const searchQuery = query;
+
+     return SubCategoryInfo.createQueryBuilder().select()
+       .where('title ILIKE :searchQuery', {searchQuery: `%${searchQuery}%`})
+      //  .orWhere('username ILIKE :searchQuery', {searchQuery: `%${searchQuery}%`})
+      //  .orWhere('description ILIKE :searchQuery', {searchQuery: `%${searchQuery}%`})
+       .getMany().catch(() => {
+      throw new HttpException('Server error', HttpStatus.NOT_FOUND);
+    });
   }
 
   async findOne(id: string): Promise<SubCategoryInfo> {

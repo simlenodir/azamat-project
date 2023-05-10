@@ -9,6 +9,7 @@ import {
   HttpCode,
   HttpStatus,
   Headers,
+  Query,
 } from '@nestjs/common';
 import { SubCategoriesService } from './sub-categories.service';
 import { CreateSubCategoryDto } from './dto/create-sub-category.dto';
@@ -78,6 +79,8 @@ export class SubCategoriesController {
   findAll() {
     return this.subCategoriesService.findAll();
   }
+
+
 
   @Get('/get/:id')
   @ApiOkResponse()

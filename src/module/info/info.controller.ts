@@ -96,6 +96,15 @@ export class InfoController {
     return this.infoService.findAll(ofset, limit);
   }
 
+  
+  @Get('search')
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
+  foundSearch(@Query('query') query:string) {
+    return this.infoService.searchAll(query)
+  }
+
   @Get('info/:id')
   @ApiOkResponse()
   @ApiNotFoundResponse()
