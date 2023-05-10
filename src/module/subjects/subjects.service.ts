@@ -9,10 +9,7 @@ export class SubjectsService {
     const foundSubject = await Subject.findOne({
       where: {id},
       relations: {
-        practices: true,
-        subject_additional: true,
-        video: true,
-        lectures: true,
+        subject_detail: true
        }
     }).catch(() => {
       throw new HttpException('Server error', HttpStatus.NOT_FOUND);

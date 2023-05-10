@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpCode,
+  HttpStatus,
+  Headers,
+} from '@nestjs/common';
 import { SubCategoriesService } from './sub-categories.service';
 import { CreateSubCategoryDto } from './dto/create-sub-category.dto';
 import { UpdateSubCategoryDto } from './dto/update-sub-category.dto';
@@ -23,8 +34,8 @@ import {
 export class SubCategoriesController {
   constructor(
     private readonly subCategoriesService: SubCategoriesService,
-    private readonly verifyAdmin: TokenMiddleware
-    ) {}
+    private readonly verifyAdmin: TokenMiddleware,
+  ) {}
 
   @Post('/create')
   @HttpCode(HttpStatus.CREATED)
@@ -53,8 +64,11 @@ export class SubCategoriesController {
     description: 'Admin token',
     required: true,
   })
-  create(@Body() createSubCategoryDto: CreateSubCategoryDto) {
-    return this.subCategoriesService.create(createSubCategoryDto);
+  async create(@Body() createSubCategoryDto: CreateSubCategoryDto, @Headers() header:string) {
+    const admin = await this.verifyAdmin.verify(header);
+    if (admin) {
+      return this.subCategoriesService.create(createSubCategoryDto);
+    }
   }
 
   @Get('/list')
@@ -87,7 +101,7 @@ export class SubCategoriesController {
         category_id: {
           type: 'string',
           default: 'c4adaf55-feec-4c85-8d34-67c3cd1f2d14',
-        }
+        },
       },
     },
   })
@@ -99,7 +113,10 @@ export class SubCategoriesController {
     description: 'Admin token',
     required: true,
   })
-  update(@Param('id') id: string, @Body() updateSubCategoryDto: UpdateSubCategoryDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateSubCategoryDto: UpdateSubCategoryDto,
+  ) {
     return this.subCategoriesService.update(id, updateSubCategoryDto);
   }
 

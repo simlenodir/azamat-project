@@ -7,7 +7,7 @@ import { SubCategory } from 'src/entities/sub_category.entity';
 export class SubCategoriesService {
   async foundSubCategory(id: string): Promise<SubCategory> {
     const foundSubCategory = await SubCategory.findOne({
-      relations: {info: true},
+      relations: {category_id: true},
       where: {id}
     })
     if (!foundSubCategory) {
@@ -31,7 +31,7 @@ export class SubCategoriesService {
 
   async findAll(): Promise<SubCategory[]> {
     return SubCategory.find({
-      relations: {category_id: true}
+      relations: {info: true}
     }).catch(() => {
       throw new HttpException('Server error', HttpStatus.NOT_FOUND);
     });
@@ -57,6 +57,6 @@ export class SubCategoriesService {
 
   async remove(id: string): Promise<void> {
     const foundSubCategory = await this.foundSubCategory(id)
-    await SubCategory.delete(id )
+    await SubCategory.delete(id)
   }
 }

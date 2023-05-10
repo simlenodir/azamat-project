@@ -23,7 +23,7 @@ export class PracticesService {
       .into(Practices)
       .values({
         title: dto.title,
-        subject_id: dto.subject_id as any,
+        detail_id: dto.subject_id as any,
         file: file
       })
       .execute()
@@ -48,7 +48,7 @@ export class PracticesService {
     .update(Practices)
     .set({
       title: dto.title  || foundPractice.title,
-      subject_id: dto.subject_id as any  || foundPractice.subject_id,
+      detail_id: dto.subject_id as any  || foundPractice.detail_id,
       file: file || foundPractice.file
     })
     .where({id})

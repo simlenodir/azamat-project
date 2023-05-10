@@ -73,7 +73,8 @@ export class AuthService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     });
-
+    console.log(foundAdmin.email);
+    
     const isMatch = await bcrypt.compare(password, foundAdmin.password);
 
     const adminEmail = foundAdmin.email;
@@ -119,6 +120,7 @@ export class AuthService {
   async update(email: string, dto: UpdateAdminDto, file: string): Promise<void> {
     const foundAdmin = await Admin.find()
     const found = foundAdmin[0]
+     console.log(dto.email);
      
     await Admin.createQueryBuilder()
       .update(Admin)
@@ -133,7 +135,7 @@ export class AuthService {
         isActive: dto.isaActive || found.isActive,
         image: file,
       })
-      .where({ email: dto.email })
+      .where({id: found.id})
       .execute()
       .catch(() => {
         throw new HttpException(

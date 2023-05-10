@@ -14,6 +14,7 @@ import { Political } from 'src/entities/political.entity';
 import { Events } from 'src/entities/events.entity';
 import { AdminInfo } from 'src/entities/admin_info.entity';
 import { Admin } from 'src/entities/admin.entity';
+import { SubjectDetail } from 'src/entities/subject_details.entity';
 dotenv.config();
 
 export const connectDb: TypeOrmModuleOptions = {
@@ -38,6 +39,7 @@ export const connectDb: TypeOrmModuleOptions = {
     Events,
     Admin,
     AdminInfo,
+    SubjectDetail
   ],
   autoLoadEntities: true,
   synchronize: true,

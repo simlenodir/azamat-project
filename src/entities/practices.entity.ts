@@ -1,5 +1,6 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Subject } from './subjects.entity';
+import { SubjectDetail } from './subject_details.entity';
 
 @Entity({ name: 'practices' })
 export class Practices extends BaseEntity {
@@ -22,9 +23,9 @@ export class Practices extends BaseEntity {
   @CreateDateColumn()
   create_date: Date;
 
-  @ManyToOne(() => Subject, (subject) => subject.id ,{
+  @ManyToOne(() => SubjectDetail, (detail) => detail.id ,{
     onDelete: 'CASCADE'
   })
-  @JoinColumn({name: 'subject_id'})
-  subject_id: Subject
+  @JoinColumn({name: 'detail_id'})
+  detail_id: SubjectDetail
 }

@@ -13,16 +13,11 @@ import { CategoriesModule } from './module/categories/categories.module';
 import { SubCategoriesModule } from './module/sub-categories/sub-categories.module';
 import { InfoModule } from './module/info/info.module';
 import { SubjectsModule } from './module/subjects/subjects.module';
-import { LecturesModule } from './module/lectures/lectures.module';
 import { VideosModule } from './module/videos/videos.module';
 import { PracticesModule } from './module/practices/practices.module';
-import { SubjectAdditionalModule } from './module/subject_additional/subject_additional.module';
-import { SubjectLabaratoriesModule } from './module/subject_labaratories/subject_labaratories.module';
-import { EducationModule } from './module/education/education.module';
-import { PoliticalModule } from './module/political/political.module';
-import { EventsModule } from './module/events/events.module';
 import { AdminInfoModule } from './module/admin_info/admin_info.module';
 import { TokenMiddleware } from './middleware/middleware.service';
+import { SubjectDetailsModule } from './module/subject_details/subject_details.module';
 dotenv.config();
 
 @Module({
@@ -46,15 +41,10 @@ dotenv.config();
     SubCategoriesModule,
     InfoModule,
     SubjectsModule,
-    LecturesModule,
     VideosModule,
     PracticesModule,
-    SubjectAdditionalModule,
-    SubjectLabaratoriesModule,
-    EducationModule,
-    PoliticalModule,
-    EventsModule,
     AdminInfoModule,
+    SubjectDetailsModule,
   ],
 })
 export class AppModule {}
